@@ -65,6 +65,24 @@ var GameState = {
         if(this.cursors.up.isDown && this.player.body.touching.down){
             this.player.body.velocity.y = -this.JUMPING_SPEED;
         }
+    },
+    
+    createOnScreenControls : function(){
+        this.leftArrow = this.add.button(20, 535, 'arrowButton');
+        this.rightArrow = this.add.button(110, 535, 'arrowButton');
+        this.actionButton = this.add.button(280, 535, 'actionButton');
+    
+        this.leftArrow.alpha = 0.5;
+        this.rightArrow.alpha = 0.5;
+        this.actionButton.alpha = 0.5;
+        
+        this.actionButton.events.onInputDown.add(function(){
+           this.player.customParams.mustJump = true; 
+        }, this);
+        
+        this.actionButton.events.onInputUp.add(function(){
+            this.player.customParams.mustJump = false;
+        }, this);
     }
 };
 
