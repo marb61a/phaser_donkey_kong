@@ -22,5 +22,30 @@ var GameState = {
     
         this.load.spritesheet('player', 'assets/images/player_spritesheet.png', 28, 30, 5, 1, 1);    
         this.load.spritesheet('fire', 'assets/images/fire_spritesheet.png', 20, 21, 2, 1, 1);
+    },
+    
+    // Executed after everything loaded
+    create : function(){
+        this.ground = this.add.sprite(0, 500, 'ground');
+        this.game.physics.arcade.enable(this.ground);
+        this.ground.body.allowGravity = false;
+        this.ground.body.immovable = true;
+    
+        var platform = this.add.sprite(0, 300, 'platform');
+        this.game.physics.arcade.enable(platform);
+        platform.body.allowGravity = false;
+        platform.body.immovable = true;
+        
+        //create player
+        this.player = this.add.sprite(100, 200, 'player', 3);
+        this.player.anchor.setTo(0.5);
+        this.player.animations.add('walking', [0, 1, 2, 1], 6, true);
+        this.game.physics.arcade.enable(this.player);    
     }
 };
+
+//Initialise the Phaser framework
+var game = new Phaser.Game(360, 592, Phaser.AUTO);
+
+game.state.add('GameState', GameState);
+game.state.start('GameState');
