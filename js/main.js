@@ -12,6 +12,8 @@ var GameState = {
         
         this.cursors = this.game.input.keyboard.createCursorKeys();
         
+        this.game.world.setBounds(0,0,360,700);
+        
         this.RUNNING_SPEED = 180;
         this.JUMPING_SPEED = 550;
     },
@@ -27,6 +29,8 @@ var GameState = {
     
         this.load.spritesheet('player', 'assets/images/player_spritesheet.png', 28, 30, 5, 1, 1);    
         this.load.spritesheet('fire', 'assets/images/fire_spritesheet.png', 20, 21, 2, 1, 1);
+        
+        this.load.text('level', 'assets/data/level.json');
     },
     
     // Executed after everything loaded
@@ -43,6 +47,9 @@ var GameState = {
           {"x": 0, "y": 140}
         ];
         
+        //Parse the file
+        this.levelData = JSON.parse(this.game.cache.getText('level'));
+        
         this.platforms = this.add.group();
         this.platforms.enableBody = true;
     
@@ -53,7 +60,18 @@ var GameState = {
         this.platforms.setAll('body.immovable', true);
         this.platforms.setAll('body.allowGravity', false);
         
-        //create player
+        //Fires
+        this.fires = this.add.group();
+        this.fires.enableBody = true;
+        
+        var fire;
+        this.levelData.fireData.forEach(function(){
+            fire = this.fires.create(element.x, element.y, 'fire');
+            fire.animations.add('fire', [0, 1], 4, true);
+            fire.play('fire');
+        }, this);
+        
+        //Create player
         this.player = this.add.sprite(10, 545, 'player', 3);
         this.player.anchor.setTo(0.5);
         this.player.animations.add('walking', [0, 1, 2, 1], 6, true);
