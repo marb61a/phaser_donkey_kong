@@ -31,21 +31,38 @@ var GameState = {
     
     // Executed after everything loaded
     create : function(){
-        this.ground = this.add.sprite(0, 500, 'ground');
+        this.ground = this.add.sprite(0, 638, 'ground');
         this.game.physics.arcade.enable(this.ground);
         this.ground.body.allowGravity = false;
         this.ground.body.immovable = true;
     
-        var platform = this.add.sprite(0, 300, 'platform');
-        this.game.physics.arcade.enable(platform);
-        platform.body.allowGravity = false;
-        platform.body.immovable = true;
+        var platformData = [
+          {"x": 0, "y": 430},
+          {"x": 45, "y": 560},
+          {"x": 90, "y": 290},
+          {"x": 0, "y": 140}
+        ];
+        
+        this.platforms = this.add.group();
+        this.platforms.enableBody = true;
+    
+        platformData.forEach(function(element){
+          this.platforms.create(element.x, element.y, 'platform');
+        }, this);
+    
+        this.platforms.setAll('body.immovable', true);
+        this.platforms.setAll('body.allowGravity', false);
         
         //create player
-        this.player = this.add.sprite(100, 200, 'player', 3);
+        this.player = this.add.sprite(10, 545, 'player', 3);
         this.player.anchor.setTo(0.5);
         this.player.animations.add('walking', [0, 1, 2, 1], 6, true);
-        this.game.physics.arcade.enable(this.player);    
+        this.game.physics.arcade.enable(this.player);
+        this.player.customParams = {};
+
+        this.game.camera.follow(this.player);
+    
+        this.createOnscreenControls();
     },
     
     update : function(){
