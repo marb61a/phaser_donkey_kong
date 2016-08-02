@@ -53,8 +53,8 @@ var GameState = {
         this.platforms = this.add.group();
         this.platforms.enableBody = true;
     
-        platformData.forEach(function(element){
-          this.platforms.create(element.x, element.y, 'platform');
+        this.levelData.platformData.forEach(function(element){
+            this.platforms.create(element.x, element.y, 'platform');
         }, this);
     
         this.platforms.setAll('body.immovable', true);
@@ -82,6 +82,7 @@ var GameState = {
         this.player.animations.add('walking', [0, 1, 2, 1], 6, true);
         this.game.physics.arcade.enable(this.player);
         this.player.customParams = {};
+        this.player.body.collideWorldBounds = true
 
         this.game.camera.follow(this.player);
     
@@ -97,7 +98,7 @@ var GameState = {
     
     update : function(){
         this.game.physics.arcade.collide(this.player.ground);
-        this.game.physics.arcade.collide(this.player, this.platform);
+        this.game.physics.arcade.collide(this.player, this.platforms);
         
         this.game.physics.arcade.collide(this.barrels, this.ground);
         this.game.physics.arcade.collide(this.barrels, this.platforms);
